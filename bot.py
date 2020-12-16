@@ -39,7 +39,10 @@ class StreamListener(tweepy.StreamListener):
             tweet.user.screen_name,
             tweet.text,
         )
-        self.api.update_status('Ta gueule.', in_reply_to_status_id=tweet.id)
+        self.api.update_status(
+            f'@{tweet.user.screen_name} Ta gueule.',
+            in_reply_to_status_id=tweet.id,
+        )
 
     def on_error(self, status):
         logger.error(status)

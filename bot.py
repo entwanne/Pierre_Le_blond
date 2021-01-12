@@ -27,11 +27,15 @@ api.verify_credentials()
 
 
 class StreamListener(tweepy.StreamListener):
-    def __init__(self, api):
+    def __init__(self, api, track):
         self.api = api
+        self.track = [t.lower() for t in track]
 
     def on_status(self, tweet):
         if tweet.retweeted or tweet.text.startswith('RT @'):
+            return
+        content = tweet.text.lower()
+        if not any(t in content for t in self.track):
             return
         logger.info(
             'https://twitter.com/twitter/statuses/%s @%s: %s',
@@ -48,11 +52,11 @@ class StreamListener(tweepy.StreamListener):
         logger.error(status)
 
 
-stream = tweepy.Stream(api.auth, StreamListener(api))
 track = [
     'ça va être tout noir',
     'ça va etre tout noir',
     'ca va être tout noir',
     'ca va etre tout noir',
 ]
+stream = tweepy.Stream(api.auth, StreamListener(api, track))
 stream.filter(track=track, languages=['fr'])

@@ -40,7 +40,7 @@ class StreamListener(tweepy.StreamListener):
             tweet.text,
         )
         self.api.update_status(
-            f'@{tweet.user.screen_name} Ta gueule.',
+            f'@{tweet.user.screen_name} Ta gue\u200Bule !',
             in_reply_to_status_id=tweet.id,
         )
 
